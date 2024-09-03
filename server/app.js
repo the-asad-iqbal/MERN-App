@@ -18,10 +18,9 @@ app.use(
    })
 );
 
-
-app.use("/api/v1/user", userRoutes)
-
+app.use("/api/v1/user", userRoutes);
 
 app.listen(process.env.PORT, () => {
+   connectDB();
    console.log(`[Server]: Running, http://localhost:${process.env.PORT}`);
 });

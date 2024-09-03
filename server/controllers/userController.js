@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 
 const registerUser = async (req, res) => {
    try {
@@ -72,4 +72,20 @@ const loginUser = async (req, res) => {
    }
 };
 
-export { registerUser };
+const userProfile = async (req, res) => {
+   try {
+      const { _id } = req.user;
+      const user = await User.findById(_id);
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      return res.status(200).json({
+         user,
+         status: "success",
+         message: "User profile fetched successfully",
+      });
+   } catch (error) {
+      return res.status(500).json(error?.message || error);
+   }
+};
+
+export { registerUser, loginUser, userProfile };
