@@ -10,9 +10,9 @@ const registerUser = async (req, res) => {
 
       const user = await User.create({ name, email, password });
 
-      const token = user.generateRefreshToken();
+      const token = await user.generateRefreshToken();
 
-      user.refreshToken = token;
+      user.refreshToken = token.toString();
       await user.save();
 
       return res
@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
          })
          .status(201)
          .json({
-            _id: user._id,
+            user,
             message: "User created successfully",
             status: "success",
          });

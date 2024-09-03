@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
    email: {
       type: String,
       required: true,
-      unique: true,
    },
    password: {
       type: String,
@@ -23,13 +22,12 @@ const userSchema = new mongoose.Schema({
    },
    refreshToken: {
       type: String,
-      required: false,
       default: null,
    },
 });
 
-userSchema.pre("save", async (next) => {
-   if (this.isModified("password")) {
+userSchema.pre("save", async function (next) {
+   if (this.isModified && this.isModified("password")) {
       const salt = await bcrypt.genSalt(16);
       const hashedPassword = await bcrypt.hash(this.password, salt);
       this.password = hashedPassword;
